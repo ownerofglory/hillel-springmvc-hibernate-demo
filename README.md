@@ -6,10 +6,13 @@ An example app running on Tomcat 10
 - JPA/Hibernate
 - Tomcat 10
 - MySQL
+- H2 Database
 - Slf4j + Log4j2
 - Jackson
 - Mapstruct
 - Lombok 
+- JUnit
+- Mockito
 
 ## Prerequisites
 - Java >= 17
