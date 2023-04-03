@@ -34,7 +34,7 @@ public class JpaConfig {
     private String hibernateShowSql;
     @Value("${jpa.hibernate.autoStrategy:none}")
     private String hibernateAutoStrategy;
-    @Value("${jpa.hibernate.dialect:org.hibernate.dialect.MySQL8Dialect}")
+    @Value("${jpa.hibernate.dialect:org.hibernate.dialect.MySQLDialect}")
     private String hibernateDialect;
 
     @Bean

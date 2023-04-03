@@ -47,4 +47,9 @@ public class UserInMemoryService implements UserService {
 
         return existingUser;
     }
+
+    @Override
+    public void deleteUser(Integer id) {
+
+    }
 }

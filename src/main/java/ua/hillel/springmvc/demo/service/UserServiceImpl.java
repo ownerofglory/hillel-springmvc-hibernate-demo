@@ -11,7 +11,6 @@ import ua.hillel.springmvc.demo.model.mapper.UserMapper;
 import ua.hillel.springmvc.demo.repo.UserRepo;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Primary
 @Service
@@ -55,7 +54,17 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.UserDTOToUser(userDTO);
 
-        User updatedUser = userRepo.save(user);
+        User updatedUser = userRepo.update(user);
         return userMapper.UserToUserDTO(updatedUser);
+    }
+
+    @Override
+    public void deleteUser(Integer id) throws UserNotFoundException {
+        User existingUser = userRepo.findById(id);
+        if (existingUser == null) {
+            throw new UserNotFoundException("User you're trying to delete doesn't exist");
+        }
+
+        userRepo.remove(existingUser);
     }
 }

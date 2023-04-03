@@ -34,6 +34,44 @@ public class UserJpaMysqlRepo implements UserRepo {
     }
 
     @Override
+    public User update(User user) {
+        EntityManager entityManager = sessionFactory.createEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+
+            User updatedUser = entityManager.merge(user);
+            entityManager.flush();
+
+            entityManager.getTransaction().commit();
+
+            return updatedUser;
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+    }
+
+    @Override
+    public User remove(User user) {
+        EntityManager entityManager = sessionFactory.createEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+
+            entityManager.remove(user);
+            entityManager.flush();
+
+            entityManager.getTransaction().commit();
+
+            return user;
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+    }
+
+    @Override
     public User findById(Integer id) {
         EntityManager entityManager = sessionFactory.createEntityManager();
         try {

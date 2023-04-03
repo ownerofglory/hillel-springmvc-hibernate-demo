@@ -11,4 +11,5 @@ public interface UserService {
     UserDTO getUserById(Integer id) throws UserNotFoundException;
     List<UserDTO> getAllUsers();
     UserDTO updateUser(Integer id, UserDTO userDTO) throws UserUpdateException;
+    void deleteUser(Integer id) throws UserNotFoundException;
 }

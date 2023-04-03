@@ -1,6 +1,8 @@
 package ua.hillel.springmvc.demo.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.hillel.springmvc.demo.exception.UserNotFoundException;
@@ -42,6 +44,14 @@ public class UserController {
     ResponseEntity<UserDTO> updateUser(@PathVariable("id") Integer id, @RequestBody UserDTO userDTO) throws UserUpdateException {
         UserDTO upodatedUser = userService.updateUser(id, userDTO);
         return ResponseEntity.ok(upodatedUser);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public @ResponseBody
+    ResponseEntity<Void> deleteUserById(@PathVariable("id") Integer id) throws UserNotFoundException {
+        userService.deleteUser(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
