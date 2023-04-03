@@ -186,6 +186,69 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven3-plugin</artifactId>
+                <version>1.10.5</version>
+                <configuration>
+                    <container>
+                        <containerId>tomcat10x</containerId>
+                        <type>remote</type>
+                    </container>
+                    <configuration>
+                        <type>runtime</type>
+                        <properties>
+                            <cargo.hostname>${tomcat.host}</cargo.hostname>
+                            <cargo.protocol>https</cargo.protocol>
+                            <cargo.port>443</cargo.port>
+                            <cargo.servlet.port>443</cargo.servlet.port>
+                            <cargo.remote.username>${tomcat.user}</cargo.remote.username>
+                            <cargo.remote.password>${tomcat.password}</cargo.remote.password>
+                            <cargo.tomcat.manager.url>${tomcat.managerUrl}</cargo.tomcat.manager.url>
+                        </properties>
+                    </configuration>
+
+                    <artifactInstaller>
+                        <groupId>org.ow2.jonas.assemblies.profiles</groupId>
+                        <artifactId>jonas-full</artifactId>
+                        <version>5.2.1</version>
+                        <classifier>bin</classifier>
+                    </artifactInstaller>
+                    <deployables>
+                        <deployable>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>${project.artifactId}</artifactId>
+                            <type>war</type>
+                            <properties>
+                                <context>hillel-app</context>
+                            </properties>
+                        </deployable>
+                    </deployables>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M9</version>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.8</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
