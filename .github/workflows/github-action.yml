@@ -1,0 +1,57 @@
+name: Hillel Servlet Demo Pipeline
+on: [push]
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 19
+        uses: actions/setup-java@v3
+        with:
+          java-version: '19'
+          distribution: 'temurin'
+      - name: Compile project
+        run: mvn --batch-mode compile
+
+  test:
+    needs: compile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 19
+        uses: actions/setup-java@v3
+        with:
+          java-version: '19'
+          distribution: 'temurin'
+      - name: Test project
+        run: mvn --batch-mode test
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 19
+        uses: actions/setup-java@v3
+        with:
+          java-version: '19'
+          distribution: 'temurin'
+      - name: Build project
+        run: mvn --batch-mode package
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 19
+        uses: actions/setup-java@v3
+        with:
+          java-version: '19'
+          distribution: 'temurin'
+      - name: Build war
+        run: mvn --batch-mode package
+      - name: Undeploy existing war
+        run: mvn --batch-mode cargo:undeploy -Dtomcat.host=${{ secrets.TOMCAT_HOST }} -Dtomcat.user=${{ secrets.TOMCAT_USER }} -Dtomcat.password=${{ secrets.TOMCAT_PASSWORD }} -Dtomcat.managerUrl=${{ secrets.TOMCAT_MANAGER_URL }}
+      - name: Deploy project
+        run: mvn --batch-mode cargo:deploy -Dtomcat.host=${{ secrets.TOMCAT_HOST }} -Dtomcat.user=${{ secrets.TOMCAT_USER }} -Dtomcat.password=${{ secrets.TOMCAT_PASSWORD }} -Dtomcat.managerUrl=${{ secrets.TOMCAT_MANAGER_URL }}
